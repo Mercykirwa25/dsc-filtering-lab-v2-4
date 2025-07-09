@@ -20,7 +20,9 @@ To get started, import `sqlite3` as well as `pandas` for conveniently displaying
 
 
 ```python
-# Your code here
+import pandas as pd
+import sqlite3
+conn = sqlite3.connect("planets.db")
 ```
 
 ## Database Schema
@@ -59,42 +61,65 @@ Write SQL queries for each of the statements below using the same pandas wrappin
 
 
 ```python
-# Your code here
+pd.read_sql("""
+SELECT name,color
+  FROM planets;
+""", conn)
 ```
 
 ### 2. Select all columns for each planet whose `num_of_moons` is 0
 
 
 ```python
-# Your code here
+pd.read_sql("""
+SELECT *
+  FROM planets
+WHERE num_of_moons = 0;
+""", conn)
 ```
 
 ### 3. Select the `name` and `mass` of each planet whose `name` has exactly 7 letters
 
 
 ```python
-# Your code here
+pd.read_sql("""
+SELECT name, mass
+  FROM planets
+WHERE length(name) = 7;
+""", conn)
 ```
 
 ### 4. Select all columns for each planet whose `mass` is greater than 1.00
 
 
 ```python
-# Your code here
+pd.read_sql("""
+SELECT *
+  FROM planets
+WHERE mass > 1.00;
+""", conn)
 ```
 
 ### 5. Select the `name` and `mass` of each planet whose `mass` is less than or equal to 1.00
 
 
 ```python
-# Your code here
+pd.read_sql("""
+SELECT name, mass
+  FROM planets
+WHERE mass <= 1.00;
+""", conn)
 ```
 
 ### 6. Select the `name` and `mass` of each planet whose `mass` is between 0 and 50
 
 
 ```python
-# Your code here
+pd.read_sql("""
+SELECT name, mass
+  FROM planets
+WHERE mass BETWEEN 0 AND 50;
+""", conn)
 ```
 
 ### 7. Select all columns for planets that have at least one moon and a `mass` less than 1.00
@@ -103,14 +128,23 @@ Write SQL queries for each of the statements below using the same pandas wrappin
 
 
 ```python
-# Your code here
+pd.read_sql("""
+SELECT *
+  FROM planets
+WHERE num_of_moons >= 1
+  AND mass < 1.00; 
+""", conn)
 ```
 
 ### 8. Select the `name` and `color` of planets that have a `color` containing the string "blue"
 
 
 ```python
-# Your code here
+pd.read_sql("""
+SELECT name, color 
+  FROM planets
+WHERE color LIKE "%blue%";
+""", conn)
 ```
 
 ### 9. Select the count of planets that don't have rings as `planets_without_rings`
@@ -121,14 +155,25 @@ Note: even though the schema states that `rings` is a `BOOLEAN` and the example 
 
 
 ```python
-# Your code here
+pd.read_sql("""
+SELECT COUNT(*) AS planets_without_rings
+  FROM planets
+WHERE rings = 0
+""", conn)
 ```
 
 ### 10. Select the name of all planets, along with a value `has_rings` that returns "Yes" if the planet does have rings, and "No" if it does not
 
 
 ```python
-# Your code here
+pd.read_sql("""
+SELECT name,
+       CASE rings
+       WHEN 1 THEN "YES"
+       WHEN 0 THEN "NO"
+       END AS has_rings
+ FROM planets;
+""", conn) 
 ```
 
 ## Summary
